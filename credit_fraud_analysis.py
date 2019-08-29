@@ -49,9 +49,9 @@ def plot_precision_recall():
     plt.plot(recall, precision, linewidth=2)
     plt.xlim([0.0, 1])
     plt.ylim([0.0, 1.05])
-    plt.xlabel('recall ration')
-    plt.ylabel('precision ration')
-    plt.title('precison-recall curlv')
+    plt.xlabel('召回率')
+    plt.ylabel('精确率')
+    plt.title('精确率-召回率 曲线')
     plt.show()
 
 
@@ -59,12 +59,13 @@ def plot_precision_recall():
 data = pd.read_csv("./creditcard.csv")
 # 数据探索
 print(data.describe())
-
+plt.rcParams['font.sans-serif']=['SimHei'] # 设置加载的字体名
+plt.rcParams['axes.unicode_minus']=False   #解决保存图像是负号'-'显示为方块的问题
 # 绘制类别分布
 plt.figure()
 ax = sns.countplot(x='Class', data=data)
-plt.title('type distribution')
-# plt.show()
+plt.title('类别分布')
+plt.show()
 
 # 显示交易笔数，欺诈交易笔数
 num = len(data)
@@ -77,12 +78,12 @@ print('诈骗交易比例：{:.6f}'.format(num_fraud/num))
 f, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(15, 8))
 bins = 50
 ax1.hist(data.Time[data.Class == 1], bins=bins, color='deeppink')
-ax1.set_title('fraud')
+ax1.set_title('诈骗交易')
 ax2.hist(data.Time[data.Class == 0], bins=bins, color='deepskyblue')
-ax1.set_title('normal')
-plt.xlabel('Time')
-plt.ylabel('Num')
-# plt.show()
+ax1.set_title('正常交易')
+plt.xlabel('时间')
+plt.ylabel('交易次数')
+plt.show()
 
 # 对Amount进行数据规范化
 data['Amount_Norm'] = StandardScaler().fit_transform(
@@ -106,7 +107,7 @@ cm = confusion_matrix(test_y, predict_y)
 class_names = [0, 1]
 # 显示混淆矩阵
 plot_confusion_matrix(cm, classes=class_names,
-                      title='Logistic and confusion matrix')
+                      title='逻辑回归 混淆矩阵')
 # 显示模型评估分数
 show_metrics()
 # 计算精确率，召回率，阀值用于可视化
